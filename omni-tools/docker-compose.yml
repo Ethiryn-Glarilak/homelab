@@ -1,0 +1,17 @@
+services:
+  omni-tools:
+    image: iib0011/omni-tools:latest
+    container_name: omni-tools
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.omni-tools.tls=true
+      - traefik.http.routers.omni-tools.tls.certresolver=ovh
+      - traefik.http.routers.omni-tools.entrypoints=websecure
+      - traefik.http.routers.omni-tools.rule=Host(`tools.ethiryn.fr`)
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    external: true

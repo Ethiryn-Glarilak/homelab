@@ -1,0 +1,44 @@
+services:
+  arcif_wordpress:
+    image: wordpress
+    container_name: arcif_wordpress
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: arcif_db
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+    depends_on:
+      - arcif_db
+    volumes:
+      - ./wordpress:/var/www/html
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.arcif_wordpress.tls=true
+      - traefik.http.routers.arcif_wordpress.tls.certresolver=ovh
+      - traefik.http.routers.arcif_wordpress.entrypoints=websecure
+      - traefik.http.routers.arcif_wordpress.rule=Host(`arcif.ethiryn.fr`)
+    networks:
+      - frontend
+      - backend
+
+  arcif_db:
+    image: mysql:8.0
+    container_name: arcif_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+      MYSQL_USER: ${WORDPRESS_DB_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  frontend:
+    external: true
+  backend:
+    external: true

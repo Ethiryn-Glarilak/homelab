@@ -1,0 +1,28 @@
+services:
+
+  traefik:
+    image: traefik
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./data/certs/:/var/traefik/certs/:rw
+      - ./log:/var/log/traefik:rw
+      - ./traefik:/etc/traefik:rw
+    environment:
+      - OVH_ENDPOINT=$OVH_ENDPOINT
+      - OVH_APPLICATION_KEY=$OVH_APPLICATION_KEY
+      - OVH_APPLICATION_SECRET=$OVH_APPLICATION_SECRET
+      - OVH_CONSUMER_KEY=$OVH_CONSUMER_KEY
+      - MAIL=$MAIL
+    networks:
+      - frontend
+    restart: unless-stopped
+
+networks:
+  frontend:
+    external: true
