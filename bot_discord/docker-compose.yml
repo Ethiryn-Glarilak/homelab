@@ -1,0 +1,30 @@
+services:
+  bot:
+    image: ghcr.io/astral-sh/uv:debian
+    container_name: seanren
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./Bots-Discord:/app:ro
+    command: uv run /app/Seanren.py
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  db:
+    image: postgres:15
+    container_name: bot_discord_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./postgres/pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true
