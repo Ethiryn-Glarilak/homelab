@@ -64,8 +64,10 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - frontend
-      - backend
+      frontend:
+        aliases:
+          - authentik-proxy
+      backend:
   worker:
     image: ghcr.io/goauthentik/server:latest
     restart: unless-stopped
