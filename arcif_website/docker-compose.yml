@@ -19,6 +19,7 @@ services:
       - traefik.http.routers.arcif_wordpress.tls.certresolver=ovh
       - traefik.http.routers.arcif_wordpress.entrypoints=websecure
       - traefik.http.routers.arcif_wordpress.rule=Host(`arcif.ethiryn.fr`)
+      - traefik.http.routers.arcif_wordpress.middlewares=authentik@file
     networks:
       - frontend
       - backend
