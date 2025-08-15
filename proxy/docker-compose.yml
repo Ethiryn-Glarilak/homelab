@@ -18,7 +18,7 @@ services:
       - OVH_APPLICATION_KEY=$OVH_APPLICATION_KEY
       - OVH_APPLICATION_SECRET=$OVH_APPLICATION_SECRET
       - OVH_CONSUMER_KEY=$OVH_CONSUMER_KEY
-      - MAIL=$MAIL
+      - TRAEFIK_CERTIFICATESRESOLVERS_OVH_ACME_EMAIL=$MAIL
     networks:
       - frontend
     restart: unless-stopped
