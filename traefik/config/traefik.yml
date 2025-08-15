@@ -23,12 +23,12 @@ providers:
     exposedByDefault: false
     network: frontend
   file:
-    directory: "/etc/traefik"
+    directory: "/etc/traefik/conf"
     watch: true
 certificatesResolvers:
   ovh:
     acme:
-      storage: /var/traefik/certs/ovh-acme.json
+      storage: /etc/traefik/certs/ovh-acme.json
       dnsChallenge:
         provider: ovh
         delayBeforeCheck: 60

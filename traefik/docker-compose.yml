@@ -10,9 +10,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./data/certs/:/var/traefik/certs/:rw
-      - ./log:/var/log/traefik:rw
-      - ./traefik:/etc/traefik:rw
+      - ./config/conf/:/etc/traefik/conf/
+      - ./config/certs/:/etc/traefik/certs/
     environment:
       - OVH_ENDPOINT=$OVH_ENDPOINT
       - OVH_APPLICATION_KEY=$OVH_APPLICATION_KEY
