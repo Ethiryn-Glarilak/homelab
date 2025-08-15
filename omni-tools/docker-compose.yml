@@ -9,6 +9,7 @@ services:
       - traefik.http.routers.omni-tools.tls.certresolver=ovh
       - traefik.http.routers.omni-tools.entrypoints=websecure
       - traefik.http.routers.omni-tools.rule=Host(`tools.ethiryn.fr`)
+      - traefik.http.routers.omni-tools.middlewares=authentik@file
     networks:
       - frontend
 
