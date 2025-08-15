@@ -28,7 +28,6 @@ providers:
 certificatesResolvers:
   ovh:
     acme:
-      email: "${MAIL}"
       storage: /var/traefik/certs/ovh-acme.json
       dnsChallenge:
         provider: ovh
