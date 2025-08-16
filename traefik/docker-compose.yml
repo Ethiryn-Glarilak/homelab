@@ -18,6 +18,14 @@ services:
       - OVH_APPLICATION_SECRET=$OVH_APPLICATION_SECRET
       - OVH_CONSUMER_KEY=$OVH_CONSUMER_KEY
       - TRAEFIK_CERTIFICATESRESOLVERS_OVH_ACME_EMAIL=$MAIL
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.tls.certresolver=ovh
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.rule=Host(`proxy.${TYPE_HOST}.ethiryn.fr`)
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.middlewares=authentik@file
     networks:
       - frontend
     restart: unless-stopped
