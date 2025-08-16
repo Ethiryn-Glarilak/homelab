@@ -6,7 +6,7 @@ logs:
   filePath: "/var/log/traefik/traefik.log"
 api:
   dashboard: true
-  insecure: true
+  insecure: false
 entryPoints:
   web:
     address: ":80"
