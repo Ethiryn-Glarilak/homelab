@@ -1,0 +1,44 @@
+services:
+  nginx-mailcow:
+    ports: !override []
+    networks:
+      mailcow-network:
+        aliases:
+          - nginx
+      frontend: {}
+    labels:
+      - traefik.enable=true
+      # - traefik.http.routers.mailcow-autodiscover.entrypoints=websecure
+      # - traefik.http.routers.mailcow-autodiscover.rule=Host(`autodiscover.domain.com`) && Path(`/autodiscover/autodiscover.xml`)
+      # - traefik.http.routers.mailcow-autodiscover.tls.certresolver=ovh
+
+      # - traefik.http.routers.mailcow-autoconfig.entrypoints=websecure
+      # - traefik.http.routers.mailcow-autoconfig.rule=Host(`autoconfig.domain.com`)&& Path(`/mail/config-v1.1.xml`)
+      # - traefik.http.routers.mailcow-autoconfig.tls.certresolver=ovh
+
+      - traefik.http.routers.mailcow.entrypoints=websecure
+      - traefik.http.routers.mailcow.rule=Host(`mail.email.ethiryn.fr`) || Host(`email.ethiryn.fr`)
+      - traefik.http.routers.mailcow.tls=true
+      - traefik.http.routers.mailcow.tls.certresolver=ovh
+      - traefik.http.routers.mailcow.middlewares=authentik@file
+
+      - traefik.docker.network=frontend
+
+  # certdumper:
+  #   image: ghcr.io/kereis/traefik-certs-dumper:latest
+  #   container_name: traefik_certdumper
+  #   restart: unless-stopped
+  #   network_mode: none
+  #   command: --restart-containers mailcow_postfix-mailcow_1,mailcow_dovecot-mailcow_1
+  #   volumes:
+  #     - ../../traefik/config/certs:/traefik:ro # mount your traefik certificate file
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - ./data/assets/ssl:/output:rw
+  #   environment:
+  #     - DOMAIN=ethiryn.fr
+  #     - ACME_FILE_PATH=/traefik/ovh-acme.json
+
+networks:
+  frontend:
+    external: true
+
