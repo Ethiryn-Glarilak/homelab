@@ -6,7 +6,7 @@ services:
     working_dir: /app
     volumes:
       - ./Bots-Discord:/app:ro
-    command: uv run /app/Seanren.py
+    command: uv run /app/Seanren.py & bash
     depends_on:
       - db
     networks:

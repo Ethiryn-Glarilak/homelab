@@ -22,21 +22,27 @@ services:
       - traefik.http.routers.mailcow.tls.certresolver=ovh
       - traefik.http.routers.mailcow.middlewares=authentik@file
 
+      - traefik.http.routers.mailcow-admin.entrypoints=websecure
+      - traefik.http.routers.mailcow-admin.rule=(Host(`mail.email.ethiryn.fr`) || Host(`email.ethiryn.fr`)) && (PathPrefix(`/admin`) || PathPrefix(`/domain-admin`))
+      - traefik.http.routers.mailcow-admin.tls=true
+      - traefik.http.routers.mailcow-admin.tls.certresolver=ovh
+      - traefik.http.routers.mailcow-admin.middlewares=authentik@file
+
       - traefik.docker.network=frontend
 
-  # certdumper:
-  #   image: ghcr.io/kereis/traefik-certs-dumper:latest
-  #   container_name: traefik_certdumper
-  #   restart: unless-stopped
-  #   network_mode: none
-  #   command: --restart-containers mailcow_postfix-mailcow_1,mailcow_dovecot-mailcow_1
-  #   volumes:
-  #     - ../../traefik/config/certs:/traefik:ro # mount your traefik certificate file
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #     - ./data/assets/ssl:/output:rw
-  #   environment:
-  #     - DOMAIN=ethiryn.fr
-  #     - ACME_FILE_PATH=/traefik/ovh-acme.json
+  certdumper:
+    image: ghcr.io/kereis/traefik-certs-dumper:latest
+    container_name: traefik_certdumper
+    restart: unless-stopped
+    network_mode: none
+    command: --restart-containers mailcow_postfix-mailcow_1,mailcow_dovecot-mailcow_1
+    volumes:
+      - ../../traefik/config/certs:/traefik:ro # mount your traefik certificate file
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/assets/ssl:/output:rw
+    environment:
+      - DOMAIN=mail.email.ethiryn.fr
+      - ACME_FILE_PATH=/traefik/ovh-acme.json
 
 networks:
   frontend:
