@@ -17,13 +17,13 @@ services:
       # - traefik.http.routers.mailcow-autoconfig.tls.certresolver=ovh
 
       - traefik.http.routers.mailcow.entrypoints=websecure
-      - traefik.http.routers.mailcow.rule=Host(`mail.email.ethiryn.fr`) || Host(`email.ethiryn.fr`)
+      - traefik.http.routers.mailcow.rule=Host(`mail.email.${DOMAIN}`) || Host(`email.${DOMAIN}`)
       - traefik.http.routers.mailcow.tls=true
       - traefik.http.routers.mailcow.tls.certresolver=ovh
       - traefik.http.routers.mailcow.middlewares=authentik@file
 
       - traefik.http.routers.mailcow-admin.entrypoints=websecure
-      - traefik.http.routers.mailcow-admin.rule=(Host(`mail.email.ethiryn.fr`) || Host(`email.ethiryn.fr`)) && (PathPrefix(`/admin`) || PathPrefix(`/domain-admin`))
+      - traefik.http.routers.mailcow-admin.rule=(Host(`mail.email.${DOMAIN}`) || Host(`email.${DOMAIN}`)) && (PathPrefix(`/admin`) || PathPrefix(`/domain-admin`))
       - traefik.http.routers.mailcow-admin.tls=true
       - traefik.http.routers.mailcow-admin.tls.certresolver=ovh
       - traefik.http.routers.mailcow-admin.middlewares=authentik@file
@@ -41,7 +41,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/assets/ssl:/output:rw
     environment:
-      - DOMAIN=mail.email.ethiryn.fr
+      - DOMAIN=mail.email.${DOMAIN}
       - ACME_FILE_PATH=/traefik/ovh-acme.json
 
 networks:

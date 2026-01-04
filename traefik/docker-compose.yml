@@ -22,7 +22,7 @@ services:
       - traefik.http.routers.traefik.tls=true
       - traefik.http.routers.traefik.tls.certresolver=ovh
       - traefik.http.routers.traefik.entrypoints=websecure
-      - traefik.http.routers.traefik.rule=Host(`proxy.${TYPE_HOST}.ethiryn.fr`)
+      - traefik.http.routers.traefik.rule=Host(`proxy.${TYPE_HOST}.${DOMAIN}`)
       - traefik.http.routers.traefik.service=api@internal
       - traefik.http.routers.traefik.middlewares=authentik@file
     networks:
