@@ -16,6 +16,8 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
+  internal:
+    address: ":8000"
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
@@ -31,3 +33,21 @@ certificatesResolvers:
       dnsChallenge:
         provider: ovh
         delayBeforeCheck: 60
+
+#log:
+#  level: DEBUG  # Niveau de log le plus verbeux
+#  format: common # ou "json" si vous préférez un format structuré
+#  filePath: /etc/traefik/logs/traefik.log  # Chemin vers le fichier de log
+#  maxSize: 100  # Taille max d'un fichier de log en Mo
+#  maxAge: 30    # Nombre de jours avant rotation
+#  maxBackups: 3 # Nombre de fichiers de log conservés
+
+#accessLog:
+#  filePath: /etc/traefik/logs/access.log  # Fichier dédié aux logs d'accès
+#  format: json  # Format structuré pour une meilleure analyse
+#  bufferingSize: 100  # Nombre de lignes bufferisées avant écriture
+#  filters:
+#    statusCodes: ["200", "300-302", "400-499", "500-599"]  # Filtre sur les codes HTTP
+#    retryAttempts: true  # Log les tentatives de retry
+#    minDuration: 10ms    # Log les requêtes plus longues que 10ms
+

@@ -1,0 +1,15 @@
+http:
+  routers:
+    example-router:
+      rule: "Host(`example.domaine.com`)"
+      entrypoints:
+        - websecure
+      tls:
+        certResolver: ovh
+      service: example-service
+
+  services:
+    example-service:
+      loadBalancer:
+        servers:
+          - url: "http://ip-routing:port-routing"

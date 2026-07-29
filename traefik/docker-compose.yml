@@ -10,7 +10,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./config/conf/:/etc/traefik/conf/
+      - ./config/conf/${TYPE_HOST}:/etc/traefik/conf/${TYPE_HOST}
+      - ./config/conf/common:/etc/traefik/conf/common
       - ./config/certs/:/etc/traefik/certs/
       - ./config/logs/:/etc/traefik/logs/
     environment:
