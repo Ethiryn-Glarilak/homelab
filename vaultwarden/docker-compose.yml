@@ -1,0 +1,43 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      - DOMAIN=$HOST
+      - ADMIN_TOKEN=$ADMIN_TOKEN
+      - SIGNUPS_ALLOWED=$SIGNUPS_ALLOWED
+      - INVITATIONS_ALLOWED=$INVITATIONS_ALLOWED
+      - SMTP_HOST=$SMTP_HOST
+      - SMTP_FROM=$SMTP_FROM
+      - SMTP_PORT=$SMTP_PORT
+      - SMTP_USERNAME=$SMTP_USERNAME
+      - SMTP_PASSWORD=$SMTP_PASSWORD
+      - SMTP_SECURITY=$SMTP_SECURITY
+      - SSO_ENABLED=$SSO_ENABLED
+      - SSO_CLIENT_ID=$SSO_CLIENT_ID
+      - SSO_CLIENT_SECRET=$SSO_CLIENT_SECRET
+      - SSO_AUTHORITY=$SSO_AUTHORITY
+      - SSO_SCOPES=$SSO_SCOPES
+      - SSO_ONLY=$SSO_ONLY
+      - SSO_AUTOCREATE_USERS=$SSO_AUTOCREATE_USERS
+      - LOG_LEVEL=debug
+    volumes:
+      - ./vw-data/:/data/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.vaultwarden.tls=true
+      - traefik.http.routers.vaultwarden.tls.certresolver=ovh
+      - traefik.http.routers.vaultwarden.entrypoints=websecure
+      - traefik.http.routers.vaultwarden.rule=Host(`password.${DOMAIN}`)
+      - traefik.http.routers.vaultwarden-admin.tls=true
+      - traefik.http.routers.vaultwarden-admin.tls.certresolver=ovh
+      - traefik.http.routers.vaultwarden-admin.entrypoints=websecure
+      - traefik.http.routers.vaultwarden-admin.rule=Host(`password.${DOMAIN}`) && PathPrefix(`/admin`)
+      - traefik.http.routers.vaultwarden-admin.middlewares=authentik@file
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    external: true

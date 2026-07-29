@@ -35,7 +35,7 @@ services:
     networks:
       - backend
   server:
-    image: ghcr.io/goauthentik/server:latest
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2026.5.6}
     restart: unless-stopped
     command: server
     container_name: authentik-server
@@ -66,6 +66,9 @@ services:
       - traefik.http.routers.authentik.tls.certresolver=ovh
       - traefik.http.routers.authentik.service=authentik
       - traefik.http.services.authentik.loadbalancer.server.port=9000
+      - traefik.http.routers.authentik-outpost.tls.certresolver=ovh
+      - traefik.http.routers.authentik-outpost.entrypoints=websecure
+      - traefik.http.routers.authentik-outpost.rule=PathPrefix(`/outpost.goauthentik.io`)
     depends_on:
       postgresql:
         condition: service_healthy
@@ -77,7 +80,7 @@ services:
           - authentik-proxy
       backend:
   worker:
-    image: ghcr.io/goauthentik/server:latest
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2026.5.6}
     restart: unless-stopped
     command: worker
     container_name: authentik-worker
