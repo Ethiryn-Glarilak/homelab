@@ -4,18 +4,13 @@ services:
     container_name: wireguard
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
+    env_file: .env
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - SERVERURL=${WIREGUARD_SERVERURL}
-      - SERVERPORT=${WIREGUARD_SERVERPORT}
-      - PEERS=${PEERS}
-      - PEERDNS=${PEERDNS}
-      - INTERNAL_SUBNET=${INTERNAL_SUBNET}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
     volumes:
       - ./config/:/config
-    ports:
-      - 51820:51820/udp
     restart: unless-stopped
+    network_mode: "container:traefik"
+
